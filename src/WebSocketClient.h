@@ -37,41 +37,45 @@
 
 #include "WebSocketConnection.h"
 
-#include "websocketpp/config/asio_no_tls_client.hpp"
 #include "websocketpp/client.hpp"
+#include "websocketpp/config/asio_no_tls_client.hpp"
 
-class WebSocketClient : public WebSocketConnection
-{
+class WebSocketClient : public WebSocketConnection {
 public:
-	typedef websocketpp::client<websocketpp::config::asio_client>	Client;
-	typedef Client::connection_ptr									ConnectionRef;
-	typedef websocketpp::config::asio_client::message_type::ptr		MessageRef;
+  typedef websocketpp::client<websocketpp::config::asio_client> Client;
+  typedef Client::connection_ptr ConnectionRef;
+  typedef websocketpp::config::asio_client::message_type::ptr MessageRef;
 
-	WebSocketClient();
-	~WebSocketClient();
+  WebSocketClient();
+  ~WebSocketClient();
 
-	void			connect( const std::string& uri );
-	void			disconnect();
-	void			ping( const std::string& msg = "" );
-	void			poll();
-	void			write( const std::string& msg );
-	// Bruce LANE, check if needed: void			writeBinary(const void *ptr, size_t len);
-	void			write(void const * msg, size_t len);
+  void connect(const std::string &uri);
+  void disconnect();
+  void ping(const std::string &msg = "");
+  void poll();
+  void write(const std::string &msg);
+  // Bruce LANE, check if needed: void			writeBinary(const void *ptr,
+  // size_t len);
+  void write(void const *msg, size_t len);
 
-	Client&			getClient();
-	const Client&	getClient() const;
+  Client &getClient();
+  const Client &getClient() const;
+
 protected:
-	Client			mClient;
-	
-	void			onClose( Client* client, websocketpp::connection_hdl handle );
-	void			onFail( Client* client, websocketpp::connection_hdl handle );
-	void			onHttp( Client* client, websocketpp::connection_hdl handle );
-	void			onInterrupt( Client* client, websocketpp::connection_hdl handle );
-	void			onMessage( Client* client, websocketpp::connection_hdl handle, MessageRef msg );
-	void			onOpen( Client* client, websocketpp::connection_hdl handle );
-	void			onPong( Client* client, websocketpp::connection_hdl handle, std::string msg );
-	void			onSocketInit( Client* client, websocketpp::connection_hdl handle, asio::ip::tcp::socket& socket );
-	void			onTcpPostInit( Client* client, websocketpp::connection_hdl handle );
-	void			onTcpPreInit( Client* client, websocketpp::connection_hdl handle );
-	bool			onValidate( Client* client, websocketpp::connection_hdl handle );
+  Client mClient;
+
+  void onClose(Client *client, websocketpp::connection_hdl handle);
+  void onFail(Client *client, websocketpp::connection_hdl handle);
+  void onHttp(Client *client, websocketpp::connection_hdl handle);
+  void onInterrupt(Client *client, websocketpp::connection_hdl handle);
+  void onMessage(Client *client, websocketpp::connection_hdl handle,
+                 MessageRef msg);
+  void onOpen(Client *client, websocketpp::connection_hdl handle);
+  void onPong(Client *client, websocketpp::connection_hdl handle,
+              std::string msg);
+  void onSocketInit(Client *client, websocketpp::connection_hdl handle,
+                    asio::ip::tcp::socket &socket);
+  void onTcpPostInit(Client *client, websocketpp::connection_hdl handle);
+  void onTcpPreInit(Client *client, websocketpp::connection_hdl handle);
+  bool onValidate(Client *client, websocketpp::connection_hdl handle);
 };
